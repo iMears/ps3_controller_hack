@@ -11,7 +11,7 @@ gem install artoo-joystick
 
 To get the PS3 controller connected via bluetooth follow the instructions [here](http://www.wikihow.com/Connect-PS3-Controller-to-Mac).
 
-###Testing The PS3 Controller 
+###Testing PS3 Controller 
 
 ```ruby
 ruby controller_test.rb
