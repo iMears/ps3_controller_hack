@@ -1,20 +1,36 @@
 require 'artoo'
+require 'arduino_firmata'
+
+
 
 connection :joystick, :adaptor => :joystick
 device :controller, :driver => :ps3 , :connection => :joystick, :interval => 0.1
 
 work do
+  norton = ArduinoFirmata.connect
+  sleep 2
+
   on controller, :joystick => proc { |*value|
     if value[1][:s] == 0 && value[1][:y] < -30000
       puts "left stick forward"
+      norton.servo_write 13, 1700
     elsif value[1][:s] == 0 && value[1][:y] > 30000
       puts "left stick backward"
+      norton.servo_write 13, 1300
+    elsif value[1][:s] == 0 && value[1][:y] > -30000 && value[1][:y] < 30000
+      puts "left stopped"
+      norton.servo_write 13, 1500
     end
 
     if value[1][:s] == 1 && value[1][:y] < -30000
       puts "right stick forward"
+      norton.servo_write 12, 1300
     elsif value[1][:s] == 1 && value[1][:y] > 30000
       puts "right stick backward"
+      norton.servo_write 12, 1700
+    elsif value[1][:s] == 0 && value[1][:y] > -30000 && value[1][:y] < 30000
+      puts "right stopped"
+      norton.servo_write 12, 1500
     end
 
     # puts "joystick #{value[1][:s]} x:#{value[1][:x]} y:#{value[1][:y]}"
